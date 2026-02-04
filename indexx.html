@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dhruv Raghav | Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* Smooth scrolling for anchor links */
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 80px; 
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #fdfdfd;
+            overflow-x: hidden;
+        }
+        h1, h2, h3, h4, .heading-serif {
+            font-family: 'Playfair Display', serif;
+        }
+        .social-icon-box {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid #f3f4f6;
+        }
+        .social-icon-box:hover {
+            transform: translateX(5px);
+            background-color: #f9fafb;
+            border-color: #e5e7eb;
+        }
+        .copy-btn {
+            opacity: 0;
+            transition: all 0.2s ease;
+        }
+        .social-icon-box:hover .copy-btn {
+            opacity: 1;
+        }
+        .audio-container {
+            border: 1px solid #e5e7eb;
+            transition: border-color 0.3s ease;
+        }
+        .audio-container:hover {
+            border-color: #3b82f6;
+        }
+        .exp-card {
+            transition: all 0.4s ease;
+        }
+        .logo-box {
+            width: 52px;
+            height: 52px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #fff;
+            border: 1px solid #f0f0f0;
+            position: relative;
+            z-index: 10;
+        }
+        .tab-btn {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        .tab-btn.active {
+            color: #111827;
+        }
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #111827;
+        }
+        .project-card {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .project-card:hover {
+            transform: translateY(-5px);
+            border-color: #3b82f6;
+        }
+        .filter-hidden {
+            display: none;
+        }
+        .page-view {
+            display: none;
+            animation: fadeIn 0.4s ease-out;
+        }
+        .page-view.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        
+        /* Metric Block UI */
+        .metric-block {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid #e5e7eb;
+            background-color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 120px;
+        }
+        .metric-block:hover {
+            background-color: #2563eb;
+            border-color: #2563eb;
+            transform: scale(1.06);
+            z-index: 20;
+            box-shadow: 0 20px 25px -5px rgba(37, 99, 235, 0.15);
+        }
+        .metric-block:hover .metric-value,
+        .metric-block:hover .metric-label {
+            color: #ffffff !important;
+        }
+
+        /* Timeline Connector */
+        .timeline-container {
+            position: relative;
+        }
+        .vertical-connector {
+            position: absolute;
+            left: 25px;
+            top: 52px;
+            bottom: 52px;
+            width: 2px;
+            background-color: #f3f4f6;
+            z-index: 1;
+        }
+
+        /* Achievements UI */
+        .honor-card {
+            transition: all 0.3s ease;
+            border: 1px solid #e5e7eb;
+            background-color: #fff;
+        }
+        .honor-card:hover {
+            background-color: #0a0a0a;
+            border-color: #262626;
+            transform: translateX(8px);
+        }
+        .honor-card:hover h4 { color: #ffffff; }
+        .honor-card:hover p { color: #a3a3a3; }
+        
+        .cert-display-area {
+            position: sticky;
+            top: 15%;
+            height: fit-content;
+        }
+        
+        .preview-content {
+            display: none;
+            animation: certFade 0.4s ease-out;
+        }
+        .preview-content.active {
+            display: block;
+        }
+
+        /* Accordion Style */
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .accordion-item.active .accordion-content {
+            max-height: 1200px;
+        }
+        .accordion-item.active .chevron-icon {
+            transform: rotate(180deg);
+        }
+
+        /* Nav Link Active State */
+        .nav-link {
+            position: relative;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 1.5px;
+            background-color: #2563eb;
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        /* Contact Section UI */
+        .contact-card {
+            background-color: #ffffff;
+            border: 1px solid #e5e7eb;
+        }
+        .form-input {
+            background-color: #f9fafb;
+            border: 1px solid #e5e7eb;
+            color: #111827;
+            transition: all 0.3s ease;
+        }
+        .form-input:focus {
+            border-color: #2563eb;
+            outline: none;
+            background-color: #ffffff;
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.05);
+        }
+        .whatsapp-btn {
+            border: 1px solid #d1fae5;
+            background-color: #f0fdf4;
+            color: #065f46;
+            transition: all 0.3s ease;
+        }
+        .whatsapp-btn:hover {
+            background-color: #dcfce7;
+            border-color: #10b981;
+        }
+
+        /* Toast Feedback */
+        #copy-toast {
+            position: fixed;
+            top: 2rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(-20px);
+            background: #111827;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 9999px;
+            font-size: 13px;
+            font-weight: 600;
+            z-index: 2000;
+            opacity: 0;
+            transition: all 0.3s ease;
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        #copy-toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+    </style>
+</head>
+<body class="text-gray-900 leading-relaxed">
+
+    <!-- COPY TOAST -->
+    <div id="copy-toast">
+        <i data-lucide="check-circle-2" class="w-4 h-4 text-green-400"></i>
+        <span>Copied to clipboard</span>
+    </div>
+
+    <!-- HOME PAGE VIEW -->
+    <div id="home-view" class="page-view active">
+        
+        <!-- STICKY HEADER -->
+        <nav class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100 h-16 flex items-center">
+            <div class="max-w-5xl mx-auto w-full px-6 flex items-center justify-between">
+                <div class="flex items-center gap-6 overflow-x-auto no-scrollbar scroll-smooth">
+                    <a href="#about" onclick="scrollToSection(event, 'about')" class="nav-link text-[10px] font-bold uppercase tracking-[0.2em] text-gray-500 hover:text-blue-600 transition-colors whitespace-nowrap">About</a>
+                    <a href="#experience" onclick="scrollToSection(event, 'experience')" class="nav-link text-[10px] font-bold uppercase tracking-[0.2em] text-gray-500 hover:text-blue-600 transition-colors whitespace-nowrap">Experience</a>
+                    <a href="#projects" onclick="scrollToSection(event, 'projects')" class="nav-link text-[10px] font-bold uppercase tracking-[0.2em] text-gray-500 hover:text-blue-600 transition-colors whitespace-nowrap">Projects</a>
+                    <a href="#achievements" onclick="scrollToSection(event, 'achievements')" class="nav-link text-[10px] font-bold uppercase tracking-[0.2em] text-gray-500 hover:text-blue-600 transition-colors whitespace-nowrap">Honors</a>
+                    <a href="#personal" onclick="scrollToSection(event, 'personal')" class="nav-link text-[10px] font-bold uppercase tracking-[0.2em] text-gray-500 hover:text-blue-600 transition-colors whitespace-nowrap">Perspective</a>
+                </div>
+                <div class="hidden sm:block">
+                    <a href="#contact" onclick="scrollToSection(event, 'contact')" class="text-[10px] font-bold uppercase tracking-widest text-blue-600 px-4 py-2 bg-blue-50 rounded-full hover:bg-blue-100 transition-all">Contact</a>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Increased width from 3xl to 5xl to fill full screen presentation better -->
+        <main class="max-w-5xl mx-auto px-6 py-12 md:py-16">
+            
+            <!-- ABOUT SECTION -->
+            <header class="mb-12" id="about">
+                <h1 class="text-3xl md:text-4xl text-gray-800 mb-10 font-serif">About</h1>
+                <div class="flex flex-col md:flex-row gap-12 items-start justify-between">
+                    <!-- LEFT: Photo and Name -->
+                    <div class="flex flex-col gap-6 w-full md:w-auto">
+                        <div class="w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden border border-gray-100 shadow-sm">
+                            <img src="dhruv.png" alt="Dhruv Raghav" class="w-full h-full object-cover">
+                        </div>
+                        <div>
+                            <h2 class="text-4xl md:text-5xl text-gray-900 font-bold tracking-tight">Dhruv Raghav</h2>
+                            <p class="text-gray-500 font-medium text-base mt-2">IIT (BHU) Varanasi '26</p>
+                        </div>
+                    </div>
+
+                    <!-- RIGHT: Contact details -->
+                    <div class="flex flex-col gap-4 w-full md:w-auto">
+                        <div class="social-icon-box flex items-center justify-between gap-4 p-3 rounded-2xl bg-white group">
+                            <a href="mailto:dhruvraghav.phe22@iitbhu.ac.in" class="flex items-center gap-4 flex-1">
+                                <div class="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center text-gray-400 group-hover:text-blue-600 transition-colors">
+                                    <i data-lucide="mail" class="w-5 h-5"></i>
+                                </div>
+                                <span class="text-sm font-medium text-gray-600 truncate">dhruv.raghav.phe22@iitbhu.ac.in</span>
+                            </a>
+                            <button onclick="copyToClipboard('dhruvraghav.phe22@iitbhu.ac.in')" class="copy-btn p-2 hover:bg-blue-50 text-gray-400 hover:text-blue-600 rounded-lg" title="Copy Email">
+                                <i data-lucide="copy" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+
+                        <div class="social-icon-box flex items-center justify-between gap-4 p-3 rounded-2xl bg-white group">
+                            <a href="https://linkedin.com/in/dhruv-raghav-8b55a1270" target="_blank" class="flex items-center gap-4 flex-1">
+                                <div class="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center text-gray-400 group-hover:text-blue-700 transition-colors">
+                                    <i data-lucide="linkedin" class="w-5 h-5"></i>
+                                </div>
+                                <span class="text-sm font-medium text-gray-600">LinkedIn Profile</span>
+                            </a>
+                            <button onclick="copyToClipboard('https://linkedin.com/in/dhruv-raghav-8b55a1270')" class="copy-btn p-2 hover:bg-blue-50 text-gray-400 hover:text-blue-600 rounded-lg" title="Copy Link">
+                                <i data-lucide="copy" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+
+                        <div class="social-icon-box flex items-center justify-between gap-4 p-3 rounded-2xl bg-white group">
+                            <div class="flex items-center gap-4 flex-1">
+                                <div class="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center text-gray-400 group-hover:text-green-600 transition-colors">
+                                    <i data-lucide="phone" class="w-5 h-5"></i>
+                                </div>
+                                <span class="text-sm font-medium text-gray-600">+91 8449620050</span>
+                            </div>
+                            <button onclick="copyToClipboard('8449620050')" class="copy-btn p-2 hover:bg-blue-50 text-gray-400 hover:text-blue-600 rounded-lg" title="Copy Number">
+                                <i data-lucide="copy" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <section class="max-w-3xl mb-12">
+                <div class="space-y-6 text-lg text-gray-700 font-light mt-6">
+                    <p>
+                        <span class="font-medium text-gray-900">Once solution-driven, now fundamentally problem-obsessed.</span> 
+                        I’m a final-year student at <span class="text-blue-700 font-normal">IIT BHU</span> with experience owning product launches, running growth experiments, and building products focused on outcomes, not just on output.
+                    </p>
+                    <div class="pt-2">
+                        <a href="https://drive.google.com/file/d/1ddxjxARcykigYrHUcyN1HMtNZQ4Rv7E6/view?usp=sharing" target="_blank" class="inline-flex items-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-full font-semibold hover:bg-blue-700 transition-all shadow-lg shadow-blue-100 group">
+                            <i data-lucide="file-text" class="w-4 h-4 group-hover:scale-110 transition-transform"></i> 
+                            View Resume
+                        </a>
+                    </div>
+                </div>
+
+                <div class="mt-8 mb-12 p-6 bg-white rounded-2xl audio-container">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="p-2 bg-blue-50 text-blue-600 rounded-full"><i data-lucide="mic-2" class="w-5 h-5"></i></div>
+                        <h3 class="text-xl text-gray-800">A Personal Perspective</h3>
+                    </div>
+                    <p class="text-sm text-gray-500 mb-4 font-light">How do I approach product thinking? Take a 30-second listen.</p>
+                    <audio controls class="w-full h-10">
+                        <source src="audio.aac" type="audio/mpeg">
+                    </audio>
+                </div>
+
+                <!-- EXPERIENCE SECTION -->
+                <div class="my-16 pt-8 border-t border-gray-50" id="experience">
+                    <h3 class="text-3xl md:text-4xl text-gray-800 mb-10 font-serif">Experience</h3>
+                    <div class="timeline-container space-y-24">
+                        <div class="vertical-connector hidden md:block"></div>
+
+                        <!-- PhysicsWallah Entry -->
+                        <div class="exp-card relative">
+                            <div class="flex flex-col md:flex-row gap-8">
+                                <div class="flex flex-col items-center">
+                                    <div class="logo-box shadow-lg bg-black border-black border-2">
+                                        <img src="pw.jpeg" class="w-10 h-10 object-contain brightness-0 invert" alt="PW Logo">
+                                    </div>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="mb-8">
+                                        <h4 class="text-2xl font-bold text-gray-900">Product Management Intern</h4>
+                                        <p class="text-sm text-blue-600 font-bold mt-1">PhysicsWallah • 2025</p>
+                                    </div>
+
+                                    <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8">
+                                        <div class="metric-block p-5 rounded-2xl cursor-default shadow-sm border-gray-100 text-center">
+                                            <span class="metric-value block text-3xl font-bold tracking-tighter text-gray-900 transition-colors">₹30L+</span>
+                                            <span class="metric-label text-[10px] uppercase font-bold tracking-wider text-gray-400 transition-colors mt-1">Sales campaign</span>
+                                        </div>
+                                        <div class="metric-block p-5 rounded-2xl cursor-default shadow-sm border-gray-100 text-center">
+                                            <span class="metric-value block text-3xl font-bold tracking-tighter text-gray-900 transition-colors">160%</span>
+                                            <span class="metric-label text-[10px] uppercase font-bold tracking-wider text-gray-400 transition-colors mt-1">Growth in Daily Referral</span>
+                                        </div>
+                                        <div class="metric-block p-5 rounded-2xl cursor-default shadow-sm border-gray-100 text-center col-span-2 md:col-span-1">
+                                            <span class="metric-value block text-3xl font-bold tracking-tighter text-gray-900 transition-colors">3 Full Cycle</span>
+                                            <span class="metric-label text-[10px] uppercase font-bold tracking-wider text-gray-400 transition-colors mt-1">Product Launches</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="bg-gray-50 p-6 rounded-3xl border border-gray-100">
+                                        <h5 class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-3">Ownership & Results</h5>
+                                        <p class="text-sm text-gray-700 leading-relaxed font-medium">
+                                            Independently owned <span class="text-blue-700 font-bold">end-to-end launches</span> in the Wellness vertical and executed high-impact sales campaigns. Optimized user growth through <span class="text-blue-700 font-bold">incentive loops</span> and built SQL-based tracking infrastructure for real-time LTV analysis.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Talent Serve Entry -->
+                        <div class="exp-card relative">
+                            <div class="flex flex-col md:flex-row gap-8">
+                                <div class="flex flex-col items-center">
+                                    <div class="logo-box shadow-md border-blue-600/10 bg-[#1e3a8a]">
+                                        <div class="w-10 h-10 bg-[#1e3a8a] flex items-center justify-center rounded-lg text-white">
+                                            <i data-lucide="check" class="w-6 h-6"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="mb-8">
+                                        <h4 class="text-2xl font-bold text-gray-900">Product Strategy Intern</h4>
+                                        <p class="text-sm font-medium text-gray-600 mt-1 uppercase tracking-widest font-bold">Talent Serve • 2024</p>
+                                    </div>
+
+                                    <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8">
+                                        <div class="metric-block p-5 rounded-2xl cursor-default shadow-sm border-gray-100 text-center">
+                                            <span class="metric-value block text-3xl font-bold tracking-tighter text-gray-900 transition-colors">$2.7B</span>
+                                            <span class="metric-label text-[10px] uppercase font-bold tracking-wider text-gray-400 transition-colors mt-1">K-12 EdTech Market</span>
+                                        </div>
+                                        <div class="metric-block p-5 rounded-2xl cursor-default shadow-sm border-gray-100 text-center">
+                                            <span class="metric-value block text-3xl font-bold tracking-tighter text-gray-900 transition-colors">10+</span>
+                                            <span class="metric-label text-[10px] uppercase font-bold tracking-wider text-gray-400 transition-colors mt-1">Platforms Benchmarked</span>
+                                        </div>
+                                        <div class="metric-block p-5 rounded-2xl cursor-default shadow-sm border-gray-100 text-center col-span-2 md:col-span-1">
+                                            <span class="metric-value block text-3xl font-bold tracking-tighter text-gray-900 transition-colors">Hooked</span>
+                                            <span class="metric-label text-[10px] uppercase font-bold tracking-wider text-gray-400 transition-colors mt-1">Engagement Mechanics</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="bg-gray-50 p-6 rounded-3xl border border-gray-100">
+                                        <h5 class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-3">Ownership & Results</h5>
+                                        <p class="text-sm text-gray-700 leading-relaxed font-medium">
+                                            Researched India’s K–12 EdTech landscape with a focus on gamification-driven retention loops. Conducted comparative gap analysis and designed engagement concepts to improve learner participation. Authored PRDs detailing user flows and success metrics for product decision-making.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PROJECTS SECTION -->
+                <div id="projects" class="my-16 pt-8 border-t border-gray-50">
+                    <h3 class="text-3xl md:text-4xl text-gray-800 mb-10 font-serif">Projects</h3>
+                    <div class="flex gap-8 border-b border-gray-100 mb-8 overflow-x-auto pb-1 no-scrollbar">
+                        <button onclick="filterProjects('all')" class="tab-btn active pb-3 text-sm font-medium text-gray-400 whitespace-nowrap" id="tab-all">All</button>
+                        <button onclick="filterProjects('ventures')" class="tab-btn pb-3 text-sm font-medium text-gray-400 whitespace-nowrap" id="tab-ventures">Start-up Project</button>
+                        <button onclick="filterProjects('case-studies')" class="tab-btn pb-3 text-sm font-medium text-gray-400 whitespace-nowrap" id="tab-case-studies">Product Case Studies</button>
+                        <button onclick="filterProjects('builds')" class="tab-btn pb-3 text-sm font-medium text-gray-400 whitespace-nowrap" id="tab-builds">AI-Built Prototypes</button>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8" id="project-grid">
+                        <div class="project-card p-6 bg-white border border-gray-100 rounded-2xl shadow-sm" data-category="case-studies" onclick="navigateTo('pulse-view')">
+                            <div class="w-10 h-10 bg-purple-50 text-purple-600 rounded-lg flex items-center justify-center mb-4"><i data-lucide="layout" class="w-5 h-5"></i></div>
+                            <h4 class="text-lg font-semibold mb-2">Pulse Browser</h4>
+                            <p class="text-sm text-gray-500 mb-4 line-clamp-2">Intent-based AI browsing case study designed to reduce cognitive overload.</p>
+                            <div class="flex items-center text-blue-600 text-xs font-semibold uppercase tracking-wider">Deep Dive <i data-lucide="chevron-right" class="w-3 h-3 ml-1"></i></div>
+                        </div>
+                        <div class="project-card p-6 bg-white border border-gray-100 rounded-2xl shadow-sm" data-category="case-studies" onclick="navigateTo('stillness-view')">
+                            <div class="w-10 h-10 bg-rose-50 text-rose-600 rounded-lg flex items-center justify-center mb-4"><i data-lucide="brain" class="w-5 h-5"></i></div>
+                            <h4 class="text-lg font-semibold mb-2">Active Stillness</h4>
+                            <p class="text-sm text-gray-500 mb-4 line-clamp-2">Behavioral design case study reframing boredom as creative depth.</p>
+                            <div class="flex items-center text-blue-600 text-xs font-semibold uppercase tracking-wider">Deep Dive <i data-lucide="chevron-right" class="w-3 h-3 ml-1"></i></div>
+                        </div>
+                        <div class="project-card p-6 bg-white border border-gray-100 rounded-2xl shadow-sm" data-category="ventures" onclick="navigateTo('inx-view')">
+                            <div class="w-10 h-10 bg-indigo-50 text-indigo-600 rounded-lg flex items-center justify-center mb-4"><i data-lucide="rocket" class="w-5 h-5"></i></div>
+                            <h4 class="text-lg font-semibold mb-2">InX - Co-Founder</h4>
+                            <p class="text-sm text-gray-500 mb-4 line-clamp-2">Centralized research ecosystem. Top 100 Startup @ Cisco ThingQbator.</p>
+                            <div class="flex items-center text-blue-600 text-xs font-semibold uppercase tracking-wider">View Case Study <i data-lucide="chevron-right" class="w-3 h-3 ml-1"></i></div>
+                        </div>
+                        <div class="project-card p-6 bg-white border border-gray-100 rounded-2xl shadow-sm" data-category="builds" onclick="navigateTo('echo-view')">
+                            <div class="w-10 h-10 bg-blue-50 text-blue-600 rounded-lg flex items-center justify-center mb-4"><i data-lucide="headphones" class="w-5 h-5"></i></div>
+                            <h4 class="text-lg font-semibold mb-2">Echo.ai Assistant</h4>
+                            <p class="text-sm text-gray-500 mb-4 line-clamp-2">Context-aware AI assistant focused on preserving decisions quietly.</p>
+                            <div class="flex items-center text-blue-600 text-xs font-semibold uppercase tracking-wider">View Details <i data-lucide="chevron-right" class="w-3 h-3 ml-1"></i></div>
+                        </div>
+                        <div class="project-card p-6 bg-white border border-gray-100 rounded-2xl shadow-sm" data-category="builds" onclick="navigateTo('doctor-view')">
+                            <div class="w-10 h-10 bg-green-50 text-green-600 rounded-lg flex items-center justify-center mb-4"><i data-lucide="stethoscope" class="w-5 h-5"></i></div>
+                            <h4 class="text-lg font-semibold mb-2">Doctor SaaS MVP</h4>
+                            <p class="text-sm text-gray-500 mb-4 line-clamp-2">Consultation tool for thread-based patient history management.</p>
+                            <div class="flex items-center text-blue-600 text-xs font-semibold uppercase tracking-wider">View Details <i data-lucide="chevron-right" class="w-3 h-3 ml-1"></i></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- HONORS SECTION -->
+                <div class="my-16 pt-8 border-t border-gray-50" id="achievements">
+                    <h3 class="text-3xl md:text-4xl text-gray-800 mb-10 font-serif">Honors & Achievements</h3>
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+                        <div class="lg:col-span-5 space-y-4">
+                            <div class="honor-card p-6 rounded-2xl cursor-pointer" onmouseenter="showCert('cert-hult')" onmouseleave="hideCert()">
+                                <h4 class="font-bold text-lg text-gray-900 transition-colors">HULT Prize – Regional Finalist</h4>
+                                <p class="text-sm text-gray-500 mt-1 transition-colors">Top 0.5% out of 5,000+ applicants in South Asia</p>
+                            </div>
+                            <div class="honor-card p-6 rounded-2xl cursor-pointer" onmouseenter="showCert('cert-sarcathon')" onmouseleave="hideCert()">
+                                <h4 class="font-bold text-lg text-gray-900 transition-colors">Sarcathon ’23 – National Finalist</h4>
+                                <p class="text-sm text-gray-500 mt-1 transition-colors">Pan-IIT product competition hosted by IIT Bombay</p>
+                            </div>
+                            <div class="honor-card p-6 rounded-2xl cursor-pointer" onmouseenter="showCert('cert-pmx')" onmouseleave="hideCert()">
+                                <h4 class="font-bold text-lg text-gray-900 transition-colors">PM Top Performer</h4>
+                                <p class="text-sm text-gray-500 mt-1 transition-colors">Top 10 Rank among 2,100+ National Teams</p>
+                            </div>
+                            <div class="honor-card p-6 rounded-2xl cursor-pointer" onmouseenter="showCert('cert-cisco')" onmouseleave="hideCert()">
+                                <h4 class="font-bold text-lg text-gray-900 transition-colors">Cisco ThingQbator Fellow</h4>
+                                <p class="text-sm text-gray-500 mt-1 transition-colors">Cohort 7 Fellowship • Awarded $5,999 Seed Grant</p>
+                            </div>
+                        </div>
+                        <div class="lg:col-span-7 cert-display-area hidden lg:block">
+                            <div class="relative w-full aspect-[1.4/1] bg-gray-100 rounded-[32px] overflow-hidden border border-gray-200 shadow-2xl flex items-center justify-center p-2">
+                                <div id="cert-placeholder" class="text-center opacity-30 px-12">
+                                    <i data-lucide="award" class="w-16 h-16 mx-auto text-gray-400 mb-4"></i>
+                                    <p class="text-base font-medium text-gray-500">Hover over an achievement to verify credentials</p>
+                                </div>
+                                <div id="cert-hult" class="preview-content absolute inset-0 w-full h-full p-2">
+                                    <img src="https://images.unsplash.com/photo-1621501115143-69be20549071?q=80&w=800&auto=format&fit=crop" class="w-full h-full object-cover rounded-[28px]" alt="HULT Prize Certificate">
+                                </div>
+                                <div id="cert-sarcathon" class="preview-content absolute inset-0 w-full h-full p-2">
+                                    <img src="https://images.unsplash.com/photo-1606326666490-45757474e788?q=80&w=800&auto=format&fit=crop" class="w-full h-full object-cover rounded-[28px]" alt="Sarcathon Certificate">
+                                </div>
+                                <div id="cert-pmx" class="preview-content absolute inset-0 w-full h-full p-2">
+                                    <img src="https://images.unsplash.com/photo-1544650039-22886fbb4323?q=80&w=800&auto=format&fit=crop" class="w-full h-full object-cover rounded-[28px]" alt="PMX Certificate">
+                                </div>
+                                <div id="cert-cisco" class="preview-content absolute inset-0 w-full h-full p-2">
+                                    <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=800&auto=format&fit=crop" class="w-full h-full object-cover rounded-[28px]" alt="Cisco Certificate">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PERSPECTIVE SECTION -->
+                <div class="my-16 pt-8 border-t border-gray-50" id="personal">
+                    <h3 class="text-3xl md:text-4xl text-gray-800 mb-10 font-serif">What’s Not on My Resume</h3>
+                    <div class="space-y-4">
+                        <div class="accordion-item border-b border-gray-100">
+                            <button onclick="toggleAccordion(this)" class="w-full flex items-center justify-between py-6 text-left focus:outline-none group">
+                                <span class="text-lg font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">Q1. Have you ever taken ownership without being asked? What did you do?</span>
+                                <i data-lucide="chevron-down" class="chevron-icon w-5 h-5 text-gray-400 transition-transform"></i>
+                            </button>
+                            <div class="accordion-content">
+                                <div class="pb-8 space-y-4 text-gray-600">
+                                    <div class="flex flex-col gap-2">
+                                        <span class="text-[10px] font-bold uppercase tracking-widest text-blue-600">The Context</span>
+                                        <p>During my internship at a wellness startup, I noticed daily attendance metrics were consistently low during a festive week. Since attendance directly affected engagement and renewal rates, this was a serious risk.</p>
+                                    </div>
+                                    <div class="flex flex-col gap-2">
+                                        <span class="text-[10px] font-bold uppercase tracking-widest text-blue-600">The Ownership</span>
+                                        <p>My manager was on leave, but instead of waiting, I proactively flagged the issue and collaborated with a senior team member. We analyzed patterns and designed a short-term incentive program aimed at habit reactivation rather than just discounts.</p>
+                                    </div>
+                                    <div class="flex flex-col gap-2">
+                                        <span class="text-[10px] font-bold uppercase tracking-widest text-blue-600">The Outcome</span>
+                                        <p>This initiative stabilized attendance during the low-engagement period and prevented a drop in renewals. It taught me when to act first and align later, especially when data signals immediate risk.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item border-b border-gray-100">
+                            <button onclick="toggleAccordion(this)" class="w-full flex items-center justify-between py-6 text-left focus:outline-none group">
+                                <span class="text-lg font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">Q2. Have you ever spoken directly to real users? What did you learn?</span>
+                                <i data-lucide="chevron-down" class="chevron-icon w-5 h-5 text-gray-400 transition-transform"></i>
+                            </button>
+                            <div class="accordion-content">
+                                <div class="pb-8 space-y-4 text-gray-600">
+                                    <div class="flex flex-col gap-2">
+                                        <span class="text-[10px] font-bold uppercase tracking-widest text-emerald-600">The Context</span>
+                                        <p>During my startup experience, I personally interviewed 20+ professors and PhD students across Tier-1 institutions to validate our ecosystem hypothesis.</p>
+                                    </div>
+                                    <div class="flex flex-col gap-2">
+                                        <span class="text-[10px] font-bold uppercase tracking-widest text-emerald-600">The Insight</span>
+                                        <p>Initially, we assumed that the main problem was the lack of a dedicated community for researchers. However, after deeper exploration and user conversations, we realized this was not the real problem. We then started classifying our target users based on how early or mature they were in their research careers. This shift helped us uncover a more pressing issue. For users at an early stage, the biggest challenge was not community—but the highly disorganized process of finding and applying for research internships.</p>
+                                    </div>
+                                    <div class="flex flex-col gap-2">
+                                        <span class="text-[10px] font-bold uppercase tracking-widest text-emerald-600">The Pivot</span>
+                                        <p>Based on this insight, we narrowed our focus to early-stage researchers. We began by forming a small WhatsApp community and manually curating research internship opportunities by actively searching the internet and sharing relevant openings. This helped us validate the problem quickly and understand user needs before building anything at scale.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item border-b border-gray-100">
+                            <button onclick="toggleAccordion(this)" class="w-full flex items-center justify-between py-6 text-left focus:outline-none group">
+                                <span class="text-lg font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">Q3. Have you ever been wrong in your hypothesis? How did you respond?</span>
+                                <i data-lucide="chevron-down" class="chevron-icon w-5 h-5 text-gray-400 transition-transform"></i>
+                            </button>
+                            <div class="accordion-content">
+                                <div class="pb-8 space-y-4 text-gray-600">
+                                    <div class="flex flex-col gap-2">
+                                        <span class="text-[10px] font-bold uppercase tracking-widest text-rose-600">The Situation</span>
+                                        <p>I was optimizing a landing page for an influencer-led wellness brand. I applied industry "best practices"—value-led messaging and benefits-led hierarchy—expecting a significant CTR lift.</p>
+                                    </div>
+                                    <div class="flex flex-col gap-2">
+                                        <span class="text-[10px] font-bold uppercase tracking-widest text-rose-600">The Failure</span>
+                                        <p>After launch, CTR didn't budge. A root cause analysis showed the flaw: for this specific brand, users cared more about the influencer's social proof and personal presence than the standalone product benefits.</p>
+                                    </div>
+                                    <div class="flex flex-col gap-2">
+                                        <span class="text-[10px] font-bold uppercase tracking-widest text-rose-600">The Correction</span>
+                                        <p>We pivoted the hierarchy to lead with social proof and the influencer narrative. This experience taught me that "best practices" only work when they match the brand's unique trust model.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CONTACT SECTION -->
+                <div class="mt-8 mb-24 pt-8 border-t border-gray-50" id="contact">
+                    <h3 class="text-3xl md:text-4xl text-gray-800 mb-10 font-serif">Get in Touch</h3>
+                    <div class="contact-card p-8 md:p-12 rounded-3xl border border-gray-100 shadow-sm max-w-4xl mx-auto">
+                        <form action="https://api.web3forms.com/submit" method="POST" class="space-y-6">
+                            <input type="hidden" name="access_key" value="YOUR_ACCESS_KEY_HERE">
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div class="flex flex-col gap-2">
+                                    <label class="text-[10px] font-bold uppercase tracking-widest text-gray-400">Name</label>
+                                    <input type="text" name="name" placeholder="Dhruv Raghav" required class="form-input p-4 rounded-2xl text-sm outline-none">
+                                </div>
+                                <div class="flex flex-col gap-2">
+                                    <label class="text-[10px] font-bold uppercase tracking-widest text-gray-400">Email</label>
+                                    <input type="email" name="email" placeholder="hello@example.com" required class="form-input p-4 rounded-2xl text-sm outline-none">
+                                </div>
+                            </div>
+                            <div class="flex flex-col gap-2">
+                                <label class="text-[10px] font-bold uppercase tracking-widest text-gray-400">Message</label>
+                                <textarea name="message" rows="4" placeholder="Let's build something together..." required class="form-input p-4 rounded-2xl text-sm outline-none resize-none"></textarea>
+                            </div>
+                            <button type="submit" class="w-full py-4 bg-gray-900 text-white font-bold rounded-2xl hover:bg-black transition-all text-sm uppercase tracking-widest shadow-xl">
+                                Send Message
+                            </button>
+                        </form>
+
+                        <div class="relative flex items-center justify-center my-10">
+                            <div class="w-full h-px bg-gray-100"></div>
+                            <span class="absolute bg-white px-6 text-[10px] font-bold uppercase tracking-widest text-gray-400">OR</span>
+                        </div>
+
+                        <a href="https://wa.me/918449620050" target="_blank" class="whatsapp-btn flex items-center justify-center gap-3 w-full py-4 rounded-2xl font-bold text-sm uppercase tracking-widest transition-all">
+                            <i data-lucide="message-circle" class="w-5 h-5"></i>
+                            Chat on WhatsApp
+                        </a>
+                    </div>
+                </div>
+
+                <div class="mt-12 pt-8 border-t border-gray-100 grid grid-cols-1 md:grid-cols-2 gap-4 pb-20">
+                    <div class="flex items-center gap-3 text-sm text-gray-500">
+                        <div class="bg-gray-100 p-2 rounded-lg"><i data-lucide="map-pin" class="w-4 h-4"></i></div>
+                        <span>Varanasi, India (IIT BHU)</span>
+                    </div>
+                    <div class="flex items-center gap-3 text-sm text-gray-500">
+                        <div class="bg-gray-100 p-2 rounded-lg"><i data-lucide="smartphone" class="w-4 h-4"></i></div>
+                        <span>+91 8449620050</span>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <!-- FULL PROJECT DEEP DIVES -->
+
+        <!-- InX Detail -->
+        <div id="inx-view" class="page-view">
+            <nav class="max-w-5xl mx-auto px-6 py-8">
+                <button onclick="navigateTo('home-view')" class="flex items-center gap-2 text-gray-500 hover:text-gray-900 transition-colors">
+                    <i data-lucide="arrow-left" class="w-4 h-4"></i> Back to Portfolio
+                </button>
+            </nav>
+            <header class="max-w-5xl mx-auto px-6 mb-12">
+                <h1 class="text-5xl md:text-6xl text-gray-900 mb-6 font-serif">InX: Empowering Research</h1>
+                <p class="text-xl text-gray-500 font-light max-w-2xl leading-relaxed">Bridging the gap between academic brilliance and global opportunities.</p>
+            </header>
+            <div class="max-w-5xl mx-auto px-6 mb-16"><div class="w-full aspect-video rounded-3xl overflow-hidden shadow-2xl bg-gray-100"><img src="startup project.jpeg" class="w-full h-full object-cover" alt="Research Ecosystem"></div></div>
+            <article class="max-w-5xl mx-auto px-6 pb-24">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+                    <aside class="md:col-span-1 space-y-8">
+                        <div class="project-meta-item"><h5 class="text-xs uppercase tracking-widest text-gray-400 font-bold mb-3">Role</h5><p class="text-gray-900 font-medium">Co-Founder & Product Lead</p></div>
+                        <div class="project-meta-item"><h5 class="text-xs uppercase tracking-widest text-gray-400 font-bold mb-3">Timeline</h5><p class="text-gray-900 font-medium">Sept 2023 — March 2025</p></div>
+                    </aside>
+                    <div class="md:col-span-2 space-y-12">
+                        <section>
+                            <h3 class="text-2xl font-bold mb-4">The Genesis</h3>
+                            <p class="text-gray-600 leading-relaxed mb-4">My journey into the research ecosystem began in June 2023 at E-Cell IIT BHU. Interacting with M.Tech and PhD students, I realized this community was incredibly talented yet highly underrated, with massive challenges around visibility and opportunities.</p>
+                            <p class="text-gray-600 leading-relaxed mb-4">In September 2023, we launched the <strong>IPEP initiative</strong> and a WhatsApp community specifically for researchers. What started as an experiment became a space where we regularly shared curated opportunities from IIT Madras (GDC), Tata’s research fellowships, and IP tech-transfer resources.</p>
+                        </section>
+                        <section>
+                            <h3 class="text-2xl font-bold mb-4">The Build & Growth</h3>
+                            <ul class="space-y-4">
+                                <li class="flex gap-4"><div class="w-6 h-6 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center text-xs font-bold flex-shrink-0">✓</div><p class="text-gray-600 text-sm">Managed a 500+ member pan-India research community on WhatsApp connecting PhDs to industry resources.</p></li>
+                                <li class="flex gap-4"><div class="w-6 h-6 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center text-xs font-bold flex-shrink-0">✓</div><p class="text-gray-600 text-sm">Strategic partnership with IIT Mandi’s iHub, driving a 30% increase in seminar participation and engagement.</p></li>
+                                <li class="flex gap-4"><div class="w-6 h-6 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center text-xs font-bold flex-shrink-0">✓</div><p class="text-gray-600 text-sm">Selected among the Top 100 startups in Cisco ThingQbator Cohort 7 fellowship.</p></li>
+                            </ul>
+                        </section>
+                        <section class="p-8 bg-gray-50 rounded-3xl border border-gray-100">
+                            <h3 class="text-xl font-bold mb-4 italic text-gray-800">The Decision to Pause</h3>
+                            <p class="text-gray-600 text-sm italic leading-relaxed">Scaling an ecosystem-level product as a student is a profound lesson in prioritization. By March 2025, I chose to take a strategic step back to re-align my product philosophy toward outcome-driven builds. The insights gained from our 20+ PhD interviews continue to fuel my approach to product judgement.</p>
+                        </section>
+                    </div>
+                </div>
+            </article>
+        </div>
+
+        <!-- Pulse Detail -->
+        <div id="pulse-view" class="page-view">
+            <nav class="max-w-5xl mx-auto px-6 py-8"><button onclick="navigateTo('home-view')" class="flex items-center gap-2 text-gray-500 hover:text-gray-900 transition-colors"><i data-lucide="arrow-left" class="w-4 h-4"></i> Back to Portfolio</button></nav>
+            <header class="max-w-5xl mx-auto px-6 mb-12">
+                <h1 class="text-5xl md:text-6xl text-gray-900 mb-6 font-serif">Pulse Browser</h1>
+                <p class="text-xl text-gray-500 font-light max-w-2xl leading-relaxed">Intent-based AI browsing designed to reduce cognitive overload and preserve intent.</p>
+            </header>
+            <div class="max-w-5xl mx-auto px-6 mb-16"><div class="w-full aspect-video rounded-3xl overflow-hidden shadow-2xl bg-purple-900"><img src="pulse.jpeg" class="w-full h-full object-cover opacity-60" alt="Browser UI Concept"></div></div>
+            <article class="max-w-5xl mx-auto px-6 pb-24">
+                <h2 class="text-3xl font-bold mb-10 border-b pb-4">Concept-Driven Product Case Study</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+                    <aside class="md:col-span-1 space-y-6">
+                        <div class="project-meta-item"><h5 class="text-xs uppercase tracking-widest text-gray-400 font-bold mb-2">Category</h5><p class="text-gray-900 font-medium">Product Strategy</p></div>
+                        <a href="https://drive.google.com/file/d/1YBbrL_MGvuicKZmtr5vJ6TFzuxGcaelo/view?usp=sharing" target="_blank" class="w-full inline-flex items-center justify-center gap-2 bg-purple-600 text-white px-6 py-4 rounded-xl font-bold hover:bg-purple-700 transition-all shadow-lg">View Strategy Deck <i data-lucide="external-link" class="w-4 h-4"></i></a>
+                    </aside>
+                    <div class="md:col-span-2 space-y-10 text-gray-700">
+                        <section><h4 class="text-xs uppercase tracking-widest text-purple-600 font-bold mb-2">Problem</h4><p>Existing workflows are broken by tab explosion and intent loss. Always-on AI browsers often worsen this by over-automating without trust, causing users to lose track of their original research intent.</p></section>
+                        <section><h4 class="text-xs uppercase tracking-widest text-purple-600 font-bold mb-2">Who It’s For</h4><p>Professionals and students who need high-intent control over their digital workspace without being overwhelmed by constant AI interference.</p></section>
+                        <section><h4 class="text-xs uppercase tracking-widest text-purple-600 font-bold mb-2">Core Insight</h4><p>Productivity is about reducing the friction between user intent and digital action. Every automated step must be intentional, not forced. The browser should act as a semantic memory layer rather than just a tab-rendering engine.</p></section>
+                        <section><h4 class="text-xs uppercase tracking-widest text-purple-600 font-bold mb-2">Solution Overview</h4><p>A dual-mode browser featuring Normal vs AI toggles. Key innovations include a Semantic Tab Finder (task-based retrieval), Smart Cursor (hover summaries), and a Tasks/Projects sidebar for session continuity.</p></section>
+                        <section><h4 class="text-xs uppercase tracking-widest text-purple-600 font-bold mb-2">MVP Decisions</h4><p>Focused on RICE-prioritized features like Dual-Mode Toggle and task-based semantic memory instead of raw tab history to ensure privacy and low cognitive load.</p></section>
+                        <section><h4 class="text-xs uppercase tracking-widest text-purple-600 font-bold mb-2">Metrics</h4><p>North Star: Session Context Continuity. Secondary: Reduction in tab-switch frequency and adoption rate of explicit AI features.</p></section>
+                        <section><h4 class="text-xs uppercase tracking-widest text-purple-600 font-bold mb-2">Risks & Mitigations</h4><p>User hesitation around AI; mitigated by intent-based triggers and a transparent, privacy-first GTM strategy.</p></section>
+                        <section class="p-8 bg-purple-50 rounded-3xl"><h4 class="font-bold text-purple-900 mb-2">What This Demonstrates</h4><p class="text-purple-900 text-sm">Strategic feature prioritization using RICE, behavioural psychology in UI design, and an intent-centric approach to AI integration.</p></section>
+                    </div>
+                </div>
+            </article>
+        </div>
+
+        <!-- Active Stillness Detail -->
+        <div id="stillness-view" class="page-view">
+            <nav class="max-w-5xl mx-auto px-6 py-8"><button onclick="navigateTo('home-view')" class="flex items-center gap-2 text-gray-500 hover:text-gray-900 transition-colors"><i data-lucide="arrow-left" class="w-4 h-4"></i> Back to Portfolio</button></nav>
+            <header class="max-w-5xl mx-auto px-6 mb-12">
+                <h1 class="text-5xl md:text-6xl text-gray-900 mb-6 font-serif">Active Stillness</h1>
+                <p class="text-xl text-gray-500 font-light max-w-2xl leading-relaxed">Reframing boredom as a state of mental depth and creative reflection.</p>
+            </header>
+            <div class="max-w-5xl mx-auto px-6 mb-16"><div class="w-full aspect-video rounded-3xl overflow-hidden shadow-2xl bg-rose-900"><img src="active.jpeg" class="w-full h-full object-cover opacity-60" alt="Reflection Concept"></div></div>
+            <article class="max-w-5xl mx-auto px-6 pb-24">
+                <h2 class="text-3xl font-bold mb-10 border-b pb-4">Concept-Driven Product Case Study</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+                    <aside class="md:col-span-1 space-y-6">
+                        <div class="project-meta-item"><h5 class="text-xs uppercase tracking-widest text-gray-400 font-bold mb-2">Category</h5><p class="text-gray-900 font-medium">Behavioral Strategy</p></div>
+                        <a href="https://drive.google.com/file/d/1MfHFWoOZdbpO-yRb8493dXmrkq30yAav/view?usp=sharing" target="_blank" class="w-full inline-flex items-center justify-center gap-2 bg-rose-600 text-white px-6 py-4 rounded-xl font-bold hover:bg-rose-700 transition-all shadow-lg">View Strategy Deck <i data-lucide="external-link" class="w-4 h-4"></i></a>
+                    </aside>
+                    <div class="md:col-span-2 space-y-10 text-gray-700">
+                        <section><h4 class="text-xs uppercase tracking-widest text-rose-600 font-bold mb-2">Problem</h4><p>The total absence of boredom due to constant digital micro-stimulation is destroying deep focus and essential reflection. Modern users face attention decay and creative burnout.</p></section>
+                        <section><h4 class="text-xs uppercase tracking-widest text-rose-600 font-bold mb-2">Who It’s For</h4><p>Modern digital users facing attention spans decay, emotional fatigue, and a loss of creative depth.</p></section>
+                        <section><h4 class="text-xs uppercase tracking-widest text-rose-600 font-bold mb-2">Core Insight</h4><p>Boredom is not empty time; it is a productive state of mental under-stimulation that enables essential reflection and original insight. Reclaiming it requires a structured "off-boarding" from digital noise.</p></section>
+                        <section><h4 class="text-xs uppercase tracking-widest text-rose-600 font-bold mb-2">Solution Overview</h4><p>A guided, session-based experience with a transition into stillness (grounding) followed by discussion-driven reflection using open questions rather than answers.</p></section>
+                        <section><h4 class="text-xs uppercase tracking-widest text-rose-600 font-bold mb-2">MVP & Scope</h4><p>Focused on experience over content quantity. Prioritized a progressive reduction of guidance to build user habit formation without engagement hacks.</p></section>
+                        <section><h4 class="text-xs uppercase tracking-widest text-rose-600 font-bold mb-2">Metrics</h4><p>North Star: Voluntary Return Rate. Key indicators: Stillness Onset Time and Focus Stability Duration during the session lifecycle.</p></section>
+                        <section><h4 class="text-xs uppercase tracking-widest text-rose-600 font-bold mb-2">Risks & Mitigations</h4><p><strong>Dependency:</strong> Mitigated by reducing guidance over time. <strong>Exhaustion:</strong> Mitigated by session-duration caps.</p></section>
+                        <section class="p-8 bg-rose-50 rounded-3xl border border-rose-100"><h4 class="font-bold text-rose-900 mb-2">What This Demonstrates</h4><p class="text-rose-900 text-sm">First-principles thinking applied to counter-intuitive behavioral problems and the ability to design systems for habit formation without engagement hacks.</p></section>
+                    </div>
+                </div>
+            </article>
+        </div>
+
+        <!-- Echo.ai Detail -->
+        <div id="echo-view" class="page-view">
+            <nav class="max-w-5xl mx-auto px-6 py-8"><button onclick="navigateTo('home-view')" class="flex items-center gap-2 text-gray-500 hover:text-gray-900 transition-colors"><i data-lucide="arrow-left" class="w-4 h-4"></i> Back to Portfolio</button></nav>
+            <header class="max-w-5xl mx-auto px-6 mb-12">
+                <h1 class="text-5xl md:text-6xl text-gray-900 mb-6 font-serif">Echo.ai</h1>
+                <p class="text-xl text-gray-500 font-light max-w-2xl leading-relaxed">Context-aware AI meeting assistant focused on trust-first design.</p>
+            </header>
+            <div class="max-w-5xl mx-auto px-6 mb-16"><div class="w-full aspect-video rounded-3xl overflow-hidden shadow-2xl bg-slate-900"><img src="echo.ai.jpeg" class="w-full h-full object-cover opacity-60" alt="AI Meeting Tool"></div></div>
+            <article class="max-w-5xl mx-auto px-6 pb-24">
+                <h2 class="text-3xl font-bold mb-10 border-b pb-4">Working Prototype Details</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+                    <aside class="md:col-span-1 space-y-6">
+                        <div class="project-meta-item"><h5 class="text-xs uppercase tracking-widest text-gray-400 font-bold mb-2">Category</h5><p class="text-gray-900 font-medium">Working Prototype</p></div>
+                        <a href="https://echo-ai-git-main-dhruv-raghavs-projects-9f1f5712.vercel.app?_vercel_share=owcYobN2OuiHQtowjfumrgtw5vCVRs3p" target="_blank" class="w-full inline-flex items-center justify-center gap-2 bg-blue-600 text-white px-6 py-4 rounded-xl font-bold hover:bg-blue-700 transition-all shadow-lg">View Prototype <i data-lucide="external-link" class="w-4 h-4"></i></a>
+                    </aside>
+                    <div class="md:col-span-2 space-y-10 text-gray-700">
+                        <section><h4 class="text-xs uppercase tracking-widest text-blue-600 font-bold mb-2">Problem</h4><p>Existing tools act as intrusive bots, causing distraction and lack of trust during privacy-sensitive discussions. Users often feel a loss of context and struggle with unclear mental models of the AI's role.</p></section>
+                        <section><h4 class="text-xs uppercase tracking-widest text-blue-600 font-bold mb-2">Who It’s For</h4><p>Knowledge workers and product teams requiring high-speed decision tracking without distracting visible bots.</p></section>
+                        <section><h4 class="text-xs uppercase tracking-widest text-blue-600 font-bold mb-2">Value Proposition</h4><p>Echo.ai is a trust-first assistant that quietly preserves decisions and follow-ups. It follows a Before–During–After lifecycle to ensure continuity without acting as an intrusive "participant."</p></section>
+                        <section><h4 class="text-xs uppercase tracking-widest text-blue-600 font-bold mb-2">Design Principles</h4><p>Predictability over surprise. Transparency over automation magic. User control, privacy, and continuity. Calm visuals and objection handling via friction-reducing microcopy.</p></section>
+                        <section class="p-8 bg-blue-50 rounded-2xl border border-blue-100"><h4 class="font-bold text-blue-900 mb-2">Impact</h4><p class="text-blue-900 text-sm">How building a clear mental model and reducing friction via microcopy can build confidence in AI tools, especially in knowledge-intensive workflows.</p></section>
+                    </div>
+                </div>
+            </article>
+        </div>
+
+        <!-- Doctor SaaS Detail -->
+        <div id="doctor-view" class="page-view">
+            <nav class="max-w-5xl mx-auto px-6 py-8"><button onclick="navigateTo('home-view')" class="flex items-center gap-2 text-gray-500 hover:text-gray-900 transition-colors"><i data-lucide="arrow-left" class="w-4 h-4"></i> Back to Portfolio</button></nav>
+            <header class="max-w-5xl mx-auto px-6 mb-12">
+                <h1 class="text-5xl md:text-6xl text-gray-900 mb-6 font-serif">Doctor Management Tool</h1>
+                <p class="text-xl text-gray-500 font-light max-w-2xl leading-relaxed">Consultation-centric MVP designed to reduce cognitive load for specialists.</p>
+            </header>
+            <div class="max-w-5xl mx-auto px-6 mb-16"><div class="w-full aspect-video rounded-3xl overflow-hidden shadow-2xl bg-emerald-900"><img src="doctor saas mvp.jpeg" class="w-full h-full object-cover opacity-60" alt="Medical SaaS UI"></div></div>
+            <article class="max-w-5xl mx-auto px-6 pb-24">
+                <h2 class="text-3xl font-bold mb-10 border-b pb-4">Working Prototype Details</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+                    <aside class="md:col-span-1 space-y-6">
+                        <div class="project-meta-item"><h5 class="text-xs uppercase tracking-widest text-gray-400 font-bold mb-2">Category</h5><p class="text-gray-900 font-medium">B2B SaaS MVP</p></div>
+                        <a href="https://gynaeconnect-dashboard.vercel.app?_vercel_share=Qe58mxASyqSBPpOExbqUaucrH4xx5ylw" target="_blank" class="w-full inline-flex items-center justify-center gap-2 bg-emerald-600 text-white px-6 py-4 rounded-xl font-bold hover:bg-emerald-700 transition-all shadow-lg">View Prototype <i data-lucide="external-link" class="w-4 h-4"></i></a>
+                    </aside>
+                    <div class="md:col-span-2 space-y-10 text-gray-700">
+                        <section><h4 class="text-xs uppercase tracking-widest text-emerald-600 font-bold mb-2">Problem</h4><p>Medical specialists (e.g., gynecologists) face scattered patient history and repetitive data-entry, which increases cognitive load and slows down consultations during high-volume hours.</p></section>
+                        <section><h4 class="text-xs uppercase tracking-widest text-emerald-600 font-bold mb-2">Value Proposition</h4><p>A thread-based patient model that treats every visit as a separate visit block while maintaining a continuous historical thread. Focuses on speed-of-access for clinicians over raw data quantity.</p></section>
+                        <section><h4 class="text-xs uppercase tracking-widest text-emerald-600 font-bold mb-2">How It Works</h4><p>Doctor-first system where every consultation is captured in discrete visit blocks. Patients provide structured inputs, but doctors retain full clinical control over the final PRES (prescriptions) and historical context.</p></section>
+                        <section><h4 class="text-xs uppercase tracking-widest text-emerald-600 font-bold mb-2">Principles</h4><p>Doctor-first clinical control. Continuous context preservation. Decision-speed over over-automation. Privacy-centric data architecture.</p></section>
+                        <section class="p-8 bg-emerald-50 rounded-2xl border border-emerald-100"><h4 class="font-bold text-emerald-900 mb-2">What This Demonstrates</h4><p class="text-emerald-900 text-sm">Effective SaaS architecture for high-velocity medical workflows, prioritizing clinician decision-speed and safety through focused usable design.</p></section>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        function copyToClipboard(text) {
+            const input = document.createElement('input');
+            input.value = text;
+            document.body.appendChild(input);
+            input.select();
+            document.execCommand('copy');
+            document.body.removeChild(input);
+
+            // Show Toast
+            const toast = document.getElementById('copy-toast');
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2000);
+        }
+
+        function scrollToSection(e, id) {
+            e.preventDefault();
+            const homeView = document.getElementById('home-view');
+            if (!homeView.classList.contains('active')) {
+                navigateTo('home-view');
+                setTimeout(() => {
+                    const target = document.getElementById(id);
+                    if (target) target.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            } else {
+                const target = document.getElementById(id);
+                if (target) target.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        function navigateTo(viewId) {
+            document.querySelectorAll('.page-view').forEach(view => view.classList.remove('active'));
+            const target = document.getElementById(viewId);
+            if(target) target.classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'instant' });
+        }
+
+        function filterProjects(category) {
+            const cards = document.querySelectorAll('.project-card');
+            const tabs = document.querySelectorAll('.tab-btn');
+            tabs.forEach(tab => {
+                tab.classList.remove('active');
+                if(tab.id === `tab-${category}`) tab.classList.add('active');
+            });
+            cards.forEach(card => {
+                if (category === 'all' || card.getAttribute('data-category') === category) {
+                    card.classList.remove('filter-hidden');
+                } else {
+                    card.classList.add('filter-hidden');
+                }
+            });
+        }
+
+        function showCert(certId) {
+            document.getElementById('cert-placeholder').style.display = 'none';
+            document.querySelectorAll('.preview-content').forEach(p => p.classList.remove('active'));
+            const target = document.getElementById(certId);
+            if(target) target.classList.add('active');
+        }
+
+        function hideCert() {}
+
+        function toggleAccordion(button) {
+            const item = button.parentElement;
+            const isActive = item.classList.contains('active');
+            
+            document.querySelectorAll('.accordion-item').forEach(otherItem => {
+                otherItem.classList.remove('active');
+            });
+
+            if (!isActive) {
+                item.classList.add('active');
+            }
+        }
+    </script>
+</body>
+</html>
+
